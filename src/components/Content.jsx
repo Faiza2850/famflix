@@ -31,6 +31,7 @@ const Content = () => {
             src={show.image?.medium || 'default-image-url.jpg'} 
             alt={show.name}
           />
+          
           <h3 className='text-xl font-bold text-center'>{show.name}</h3>
           <p>
   {show.summary 
