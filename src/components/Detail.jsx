@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { IoArrowBackCircle } from "react-icons/io5";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const Detail = () => {
-  const castUrl = "https://api.tvmaze.com/shows/1/cast"; 
-  const showUrl = "https://api.tvmaze.com/shows/1";
+  const { id } = useParams();
+  const castUrl = `https://api.tvmaze.com/shows/${id}/cast`; 
+  const showUrl = `https://api.tvmaze.com/shows/${id}`;
 
   const [cast, setCast] = useState([]); 
   const [showDetails, setShowDetails] = useState({});
 
+  
   useEffect(() => {
    
     const fetchCast = async () => {
@@ -33,13 +39,19 @@ const Detail = () => {
 
     fetchCast();
     fetchShowDetails();
-  }, []);
+  }, [id]);
+  const navigate = useNavigate();
+
+const handleBack = () => {
+  navigate(-1);
+};
+
 
   return (
     <>
       <div className="bg-black text-white px-8 py-8 lg:px-20 lg:py-20 text-lg">
         <h1 className="mb-11 text-5xl font-bold flex gap-6">
-          <IoArrowBackCircle />
+          <Link to='/'><IoArrowBackCircle onClick={handleBack} className="cursor-pointer"/></Link>
           FAMFLIX
         </h1>
 
@@ -78,23 +90,23 @@ const Detail = () => {
         {cast.map((castMember) => (
           <div
             key={castMember.person.id}
-            className="lg:flex lg:gap-9 px-5 py-3 lg:px-20 lg:py-8"
+            className=" lg:flex lg:gap-9 gap-8 px-5 py-10 lg:px-20 lg:py-8 flex"
           >
             <img
-              className="rounded"
+              className="rounded-full lg:size-40 size-32"
               src={castMember.person.image?.medium || "default-image-url.jpg"}
               alt={castMember.person.name}
             />
-            <div className="text-white lg:py-8 lg:px-8">
-              <h4 className="text-4xl font-semibold mb-8">
+            <div className="text-white lg:py- lg:px-8">
+              <h4 className="text-lg font-semibold mb-8">
                 {castMember.person.name}
               </h4>
 
-              <h5 className="text-xl font-bold">Character:</h5>
+              <h5 className="text-md font-bold">Character:</h5>
               <p>{castMember.character.name}</p>
 
-              <h5 className="text-xl font-bold mt-6">Additional Information:</h5>
-              <div className="grid lg:grid-cols-2 gap-4 mt-4">
+              <h5 className="text-sm font-bold mt-6">Additional Information:</h5>
+              <div className="grid lg:grid-cols-2 gap-4 mt-4 text-sm">
                 <div className="flex gap-4">
                   <h5>Birthday:</h5>
                   <p>{castMember.person.birthday || "Not Available"}</p>
